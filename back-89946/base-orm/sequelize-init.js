@@ -22,8 +22,19 @@ const clientes = sequelize.define(
     DNI: {
       type: DataTypes.INTEGER,
       allowNull: false
-    } 
-});
+    }, 
+  },
+    {
+        hooks: {
+            beforeValidate: function (clientes, options) {
+                if (typeof clientes.ApellidoyNombre === "string") {
+                    clientes.ApellidoYNombre = clientes.ApellidoyNombre.toUpperCase().trim();
+                }
+            },
+        },
+        timestamps: false,
+    }
+);
 
 
 const articulos = sequelize.define(
@@ -116,14 +127,6 @@ const articulos = sequelize.define(
         }
       },
     },
-    hooks: {
-      beforeValidate: function (clientes, options) {
-        if (typeof clientes.ApellidoyNombre === "string") {
-          clientes.ApellidoYNombre = clientes.ApellidoyNombre.toUpperCase().trim();
-        }
-      },
-    },
-
     timestamps: false,
   }
 );
